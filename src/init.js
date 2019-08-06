@@ -23,6 +23,7 @@ var gameOver;
 var player;
 var cursors;
 var keyObj;
+var cling= null;
 var game = new Phaser.Game(config);
 
 
@@ -82,7 +83,7 @@ function create(){
         start: 1, end: 4, zeroPad: 4,
         prefix: 'jump_', suffix: '.png'
     });
-    this.anims.create({ key: 'jump', frames: jumpframes, frameRate: 10, repeat: -1 });
+    this.anims.create({ key: 'jump', frames: jumpframes, frameRate: 10, repeat: 0 });
 
     //start player
     player.setVelocityX(200);
@@ -107,52 +108,52 @@ function update(time, delta){
         this.scene.restart();
     }
 
-    if (cursors.left.isDown && (player.body.touching.down || player.body.touching.up || player.body.touching.right))
+    if (cursors.left.isDown && (cling) && cling != 'left')
     {
         player.setVelocityX(-300);
         player.setVelocityY(0);
+        cling = null;
 
         player.anims.play('walk', true);
     }
-    else if (cursors.right.isDown &&(player.body.touching.down || player.body.touching.left || player.body.touching.up))
+    else if (cursors.right.isDown &&(cling) && cling != 'right')
     {
         player.setVelocityX(300);
         player.setVelocityY(0);
+        cling = null;
 
         player.anims.play('walk', true);
     }
 
-    if (cursors.up.isDown && (player.body.touching.down || player.body.touching.left || player.body.touching.right))
+    if (cursors.up.isDown && (cling) && cling != 'up')
     {
         player.anims.play('jump');
         player.setVelocityY(-330);
         player.setVelocityX(0);
+        cling = null;
     }
 
-    if (cursors.down.isDown && (player.body.touching.up|| player.body.touching.left || player.body.touching.right))
+    if (cursors.down.isDown && (cling) && cling != 'down')
     {
         player.setVelocityY(330);
         player.setVelocityX(0);
+        cling = null;
     }
 
 }
 
 function stickToPlatform(){
     if (player.body.touching.down){
-        player.setVelocityY(20);
-        player.setVelocityX(0);
+        cling = 'down';
     }
     if (player.body.touching.left){
-        player.setVelocityY(0);
-        player.setVelocityX(-20);
+        cling= 'left';
     }
     if (player.body.touching.up){
-        player.setVelocityY(-20);
-        player.setVelocityX(0);
+        cling = 'up';
     }
     if (player.body.touching.right){
-        player.setVelocityY(0);
-        player.setVelocityX(20);
+        cling = 'right';
     }
 }
 

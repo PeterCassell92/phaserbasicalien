@@ -21,6 +21,8 @@ const config = {
 }
 var gameOver;
 var player;
+var cursors;
+var keyObj;
 var game = new Phaser.Game(config);
 
 
@@ -28,14 +30,14 @@ function preload(){
     this.load.multiatlas('alien', '/assets/alien.json', 'assets');
     this.load.image('blueblock', '/assets/blueblock.png');
     this.load.image('pinkblock', '/assets/pinkblock.png');
+    this.load.image('blueblockvert', '/assets/blueblockvert.png');
+    this.load.image('pinkblockvert', '/assets/pinkblockvert.png');
     this.load.image('portal', '/assets/portal.png');
     //console.log("PRELOAD");
 }
 
 function create(){
-    //keyboard input
-    cursors = this.input.keyboard.createCursorKeys();
-    
+        
     //platforms
     platforms = this.physics.add.staticGroup();
     platforms.create(750, 400, 'blueblock').refreshBody();
@@ -47,7 +49,13 @@ function create(){
     platforms.create(970, 900, 'pinkblock').setScale(0.4,0.4).refreshBody();
     platforms.create(1170, 860, 'pinkblock').setScale(0.4,0.4).refreshBody();
     platforms.create(1370, 550, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-200, 550, 'pinkblockvert').setScale(0.4,0.4).refreshBody();
     platforms.create(1370, 420, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(250,750, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-350, 420, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-650, 820, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-600, 400, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-400, 0, 'blueblock').setScale(0.4,0.4).refreshBody();
 
     //portal
     portal = this.physics.add.sprite(1270, -400, 'portal');
@@ -83,6 +91,10 @@ function create(){
     //camera
     this.cameras.main.setSize(screenwidth/2, screenheight);
     this.cameras.main.startFollow(player);
+
+    //keyboard input
+    cursors = this.input.keyboard.createCursorKeys();
+    keyObj = this.input.keyboard.addKey('SPACE');
 }
 
 function update(time, delta){
@@ -90,6 +102,9 @@ function update(time, delta){
     if (gameOver)
     {
         return;
+    }
+    if (keyObj.isDown){
+        this.scene.restart();
     }
 
     if (cursors.left.isDown && (player.body.touching.down || player.body.touching.up || player.body.touching.right))

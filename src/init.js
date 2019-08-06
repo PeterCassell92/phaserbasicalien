@@ -1,5 +1,7 @@
-var screenwidth = 1400;
-var screenheight = 900;
+var screenwidth = 800;
+var screenheight = 600;
+//grid unit
+var gu = 160;
 
 const config = {
     width: screenwidth,
@@ -41,29 +43,37 @@ function create(){
         
     //platforms
     platforms = this.physics.add.staticGroup();
-    platforms.create(750, 400, 'blueblock').refreshBody();
-    platforms.create(250, 220, 'blueblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(442, 220, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(634, 220, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(670, -120, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(570, 1000, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(970, 900, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(1170, 860, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(1370, 550, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(-200, 550, 'pinkblockvert').setScale(0.4,0.4).refreshBody();
-    platforms.create(1370, 420, 'pinkblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(250,750, 'blueblockvert').setScale(0.4,0.4).refreshBody();
-    platforms.create(-350, 420, 'blueblockvert').setScale(0.4,0.4).refreshBody();
-    platforms.create(-650, 820, 'blueblockvert').setScale(0.4,0.4).refreshBody();
-    platforms.create(-600, 400, 'blueblock').setScale(0.4,0.4).refreshBody();
-    platforms.create(-400, 0, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(5*gu, 3*gu, 'blueblock').refreshBody();
+    platforms.create(2*gu, 1*gu, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(3*gu, 1*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(4*gu, 1*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(1*gu, -3*gu, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(6*gu, -2*gu, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(5*gu, -1*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(4*gu, 7*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(8*gu, 6*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(9*gu, 6 *gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(9*gu, 4*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-2*gu, 4*gu, 'pinkblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(9*gu, 3*gu, 'pinkblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(2*gu, 5*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(1*gu, 5*gu, 'pinkblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(0, 4*gu,'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-2*gu, 3*gu, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-4*gu, 5*gu, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-3*gu, 5*gu, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-4*gu, 2*gu, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-3*gu, 0, 'blueblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(-2*gu, 0, 'blueblock').setScale(0.4,0.4).refreshBody();
+    platforms.create(-4*gu, -2*gu, 'pinkblockvert').setScale(0.4,0.4).refreshBody();
+    platforms.create(4*gu, 2*gu, 'blueblockvert').setScale(0.4,0.4).refreshBody();
 
     //portal
     portal = this.physics.add.sprite(1270, -400, 'portal');
 
     //player (alien)
     
-    player = this.physics.add.sprite(200, 400, 'alien', 'walk_0001.png');
+    player = this.physics.add.sprite(2*gu, 2*gu, 'alien', 'walk_0001.png');
     player.setScale(0.3, 0.3);
     player.setBounce(0);
     
@@ -90,7 +100,7 @@ function create(){
     player.anims.play('walk', true);
 
     //camera
-    this.cameras.main.setSize(screenwidth/2, screenheight);
+    this.cameras.main.setSize(screenwidth, screenheight);
     this.cameras.main.startFollow(player);
 
     //keyboard input
@@ -159,8 +169,10 @@ function stickToPlatform(){
 
 function reachPortal(){
     console.log("PORTAL OVERLAP");
-    this.physics.pause();
+    
     player.setTint(0xff0000);
+    this.add.text(1270, -200, "WINNER", { fontFamily: 'Verdana, Tahoma' });
     player.anims.play('turn');
+    this.physics.pause();
     gameOver = true;
 }
